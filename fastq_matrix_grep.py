@@ -8,7 +8,8 @@ in_file_name = sys.argv[1]
 fastq_file = open(in_file_name,'r')
 seq_file = open('trial_seq.fq', 'w+')
 
-lines = 100
+lines = 5122486
+
 # creating sequence file out of fastq file 
 
 count = 1
@@ -22,9 +23,13 @@ for line in fastq_file:
 
 seq_file.close()
 
+# creating all possible k-mers array
+
 k = 5
 nucleotides = 'ATGC'
 k_mers = [''.join(c) for c in product(nucleotides, repeat=k)]
+
+# creating occurence matrix using grep approach
 
 occurence = { }
 for i in range(len(k_mers)):
@@ -54,10 +59,9 @@ for i in range(len(k_mers)):
 
 	file.close()
 
+# generating the output and removing all the temp files created
+
 matrix_file = "matrix.txt"
-
 data_frame = pd.DataFrame(occurence)
-
 data_frame.to_csv(matrix_file, sep='\t',index=False)
-
 os.system("rm [0-9]*.txt")
